@@ -1,0 +1,21 @@
+-- Create a backup of your database (run in phpMyAdmin or MySQL CLI)
+CREATE DATABASE git_backup;
+USE git_backup;
+CREATE TABLE people SELECT * FROM git.people;
+CREATE TABLE products SELECT * FROM git.products;
+CREATE TABLE orders SELECT * FROM git.orders;
+CREATE TABLE order_history SELECT * FROM git.order_history;
+
+-- Clear products table
+TRUNCATE TABLE products;
+
+-- Clear orders table
+TRUNCATE TABLE orders;
+
+-- Clear order_history table
+TRUNCATE TABLE order_history;
+
+-- Optionally reset auto-increment counters
+ALTER TABLE products AUTO_INCREMENT = 1;
+ALTER TABLE orders AUTO_INCREMENT = 1;
+ALTER TABLE order_history AUTO_INCREMENT = 1;
