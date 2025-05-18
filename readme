@@ -1,21 +1,48 @@
--- Create a backup of your database (run in phpMyAdmin or MySQL CLI)
-CREATE DATABASE git_backup;
-USE git_backup;
-CREATE TABLE people SELECT * FROM git.people;
-CREATE TABLE products SELECT * FROM git.products;
-CREATE TABLE orders SELECT * FROM git.orders;
-CREATE TABLE order_history SELECT * FROM git.order_history;
+-- (Optional) Backup your current data (if needed)
+CREATE DATABASE IF NOT EXISTS git_backup_2; -- Use a new name to avoid conflicts
+USE git_backup_2;
+CREATE TABLE IF NOT EXISTS people SELECT * FROM git.people;
+CREATE TABLE IF NOT EXISTS products SELECT * FROM git.products;
+CREATE TABLE IF NOT EXISTS orders SELECT * FROM git.orders;
+CREATE TABLE IF NOT EXISTS order_history SELECT * FROM git.order_history;
 
--- Clear products table
+-- Clear tables (DANGER: This deletes all data permanently!)
+USE git; -- Switch back to your main database
 TRUNCATE TABLE products;
-
--- Clear orders table
 TRUNCATE TABLE orders;
-
--- Clear order_history table
 TRUNCATE TABLE order_history;
 
--- Optionally reset auto-increment counters
+-- Reset auto-increment counters (optional)
 ALTER TABLE products AUTO_INCREMENT = 1;
 ALTER TABLE orders AUTO_INCREMENT = 1;
 ALTER TABLE order_history AUTO_INCREMENT = 1;
+
+i have 15 pages i want you to help me with, hat you need to do is create a whole new design for them , make it as stylish and beautiful as possible, i will attach a file with all the links to images you will need and also logos and backgrounds, make sure you trim them as needed and follow the design in the provided picture , add an image to every cell as well , per link provided links: logo        : https://www.citypng.com/photo/21580/download-shopping-store-market-icon-png
+home        : https://www.rawpixel.com/search/home%20icon%20png
+drink       : https://www.shutterstock.com/image-vector/alcohol-cocktail-icon-transparent-style-drink-1395940202
+food        : https://favpng.com/png_view/tableware-tool-food-icon-background-png/ztrTCQWn
+groceries   : https://www.cleanpng.com/png-organic-food-grocery-store-shopping-bags-trolleys-1489050/
+new         : https://www.shutterstock.com/search/new-icon-transparent?image_type=illustration
+snacks      : https://www.google.com/imgres?q=snakcs%20icon%20transparent&imgurl=https%3A%2F%2Fwww.clipartmax.com%2Fpng%2Fsmall%2F442-4426155_snacks-icon-snack.png&imgrefurl=https%3A%2F%2Fwww.clipartmax.com%2Fmiddle%2Fm2H7d3H7N4K9i8G6_snacks-icon-snack%2F&docid=jmXPjk4-f6FxdM&tbnid=KZ_gflQtCeWVKM&vet=12ahUKEwjIw5yH46qNAxWbXUEAHaQfC8gQM3oECHcQAA..i&w=300&h=398&hcb=2&ved=2ahUKEwjIw5yH46qNAxWbXUEAHaQfC8gQM3oECHcQAA
+special     : https://www.google.com/imgres?q=special%20icon%20transparent&imgurl=https%3A%2F%2Fwww.vhv.rs%2Fdpng%2Fd%2F477-4779113_special-special-icon-png-transparent-png.png&imgrefurl=https%3A%2F%2Fwww.vhv.rs%2Fviewpic%2FhJRxRhh_special-special-icon-png-transparent-png%2F&docid=-o_yqvE5BBn8BM&tbnid=DloqQaHyjtwKNM&vet=12ahUKEwj5geWk46qNAxVJQkEAHf1xEPUQM3oECFMQAA..i&w=860&h=1060&hcb=2&ved=2ahUKEwj5geWk46qNAxVJQkEAHf1xEPUQM3oECFMQAA
+track orders: https://www.google.com/imgres?q=track%20icon%20transparent&imgurl=https%3A%2F%2Fwww.shutterstock.com%2Fshutterstock%2Fphotos%2F1260906598%2Fdisplay_1500%2Fstock-vector-tracking-icon-trendy-tracking-logo-concept-on-transparent-background-from-technology-collection-1260906598.jpg&imgrefurl=https%3A%2F%2Fwww.shutterstock.com%2Fimage-vector%2Ftracking-icon-trendy-logo-concept-on-1260906598&docid=-rlqePlorg3GpM&tbnid=XVdc0OvXfFaXBM&vet=12ahUKEwjqlKK546qNAxX5UUEAHdkcB9kQM3oECGQQAA..i&w=1500&h=1600&hcb=2&ved=2ahUKEwjqlKK546qNAxX5UUEAHdkcB9kQM3oECGQQAA
+cart        : https://www.google.com/imgres?q=cart%20icon%20transparent&imgurl=https%3A%2F%2Fcdn5.vectorstock.com%2Fi%2F1000x1000%2F60%2F54%2Fshopping-cart-sign-dark-gray-icon-on-transparent-vector-9546054.jpg&imgrefurl=https%3A%2F%2Fwww.vectorstock.com%2Froyalty-free-vector%2Fshopping-cart-sign-dark-gray-icon-on-transparent-vector-9546054&docid=AE0Yt03wXfcJ_M&tbnid=mJlSjGrA3Dh97M&vet=12ahUKEwjjiI3H46qNAxU2bEEAHZfBE4MQM3oFCIIBEAA..i&w=1000&h=1080&hcb=2&ved=2ahUKEwjjiI3H46qNAxU2bEEAHZfBE4MQM3oFCIIBEAA
+logout      : https://www.google.com/imgres?q=log%20out%20icon%20transparent&imgurl=https%3A%2F%2Ftoppng.com%2Fuploads%2Fpreview%2Flogout-11551056293ans77of4wy.png&imgrefurl=https%3A%2F%2Ftoppng.com%2Ffree-image%2Flogout-PNG-free-PNG-Images_100888&docid=vgzxaCEi0U6-CM&tbnid=7L5KB81t5m-MuM&vet=12ahUKEwi4-azs46qNAxVbUUEAHUZeI8YQM3oECFcQAA..i&w=840&h=859&hcb=2&ved=2ahUKEwi4-azs46qNAxVbUUEAHUZeI8YQM3oECFcQAA
+total orders: https://www.google.com/imgres?q=total%20orders%20transparent&imgurl=https%3A%2F%2Fwww.clipartmax.com%2Fpng%2Fmiddle%2F348-3483471_scan-order-total-transaction-order-order-icon-scan-order-total-transaction-order.png&imgrefurl=https%3A%2F%2Fwww.clipartmax.com%2Fmiddle%2Fm2H7G6A0i8m2m2i8_scan-order-total-transaction-order-order-icon-scan-order-total-transaction-order%2F&docid=T1BPhyW06QjNaM&tbnid=i4JIe1KQkoEC6M&vet=12ahUKEwjNrfSj5KqNAxW9VUEAHfdiBHYQM3oECD0QAA..i&w=840&h=494&hcb=2&ved=2ahUKEwjNrfSj5KqNAxW9VUEAHfdiBHYQM3oECD0QAA
+processing  : https://www.google.com/imgres?q=processing%20transparent%20lgog&imgurl=https%3A%2F%2Fthumbs.dreamstime.com%2Fz%2Fdata-processing-concept-vector-linear-icon-isolated-transpare-transparent-background-transparency-outline-style-130083475.jpg&imgrefurl=https%3A%2F%2Fwww.dreamstime.com%2Fdata-processing-concept-vector-linear-icon-isolated-transpare-transparent-background-transparency-outline-style-image130083475&docid=IJ1zeABNJdx3dM&tbnid=BOmbpK8S1-zmsM&vet=12ahUKEwi9q4i15KqNAxXOWkEAHbulIPAQM3oECFsQAA..i&w=1600&h=1690&hcb=2&ved=2ahUKEwi9q4i15KqNAxXOWkEAHbulIPAQM3oECFsQAA
+shipped     : https://www.google.com/imgres?q=Shipped%20transparent%20lgog&imgurl=https%3A%2F%2Fpng.pngtree.com%2Felement_our%2F20190528%2Fourmid%2Fpngtree-black-ship-free-map-image_1145195.jpg&imgrefurl=https%3A%2F%2Fpngtree.com%2Fso%2Fblack-free-shipping&docid=43BvNzWuBBy89M&tbnid=xhguqpEeYqwaAM&vet=12ahUKEwjo5obK5KqNAxVwWEEAHSOeJ4QQM3oECFIQAA..i&w=360&h=360&hcb=2&ved=2ahUKEwjo5obK5KqNAxVwWEEAHSOeJ4QQM3oECFIQAA
+in transit  : https://www.google.com/imgres?q=Shipped%20transparent%20lgog&imgurl=https%3A%2F%2Fwww.vhv.rs%2Fdpng%2Fd%2F519-5194714_shipping-delivery-icon-transparent-background-hd-png-download.png&imgrefurl=https%3A%2F%2Fwww.vhv.rs%2Fviewpic%2Fhmiiboo_shipping-delivery-icon-transparent-background-hd-png-download%2F&docid=QvBvEU6RPZtf6M&tbnid=eHlKEZWrOd-fHM&vet=12ahUKEwjo5obK5KqNAxVwWEEAHSOeJ4QQM3oECCwQAA..i&w=860&h=499&hcb=2&ved=2ahUKEwjo5obK5KqNAxVwWEEAHSOeJ4QQM3oECCwQAA
+delivered   : https://www.google.com/imgres?q=Delivered%20transparent%20lgog&imgurl=https%3A%2F%2Fc8.alamy.com%2Fcomp%2FR1R1HX%2Fdelivery-vector-icon-isolated-on-transparent-background-delivery-transparency-logo-concept-R1R1HX.jpg&imgrefurl=https%3A%2F%2Fwww.alamy.com%2Fdelivery-vector-icon-isolated-on-transparent-background-delivery-transparency-logo-concept-image224855622.html&docid=WKSgwU21X2HrsM&tbnid=gy5PWwaUWh6R_M&vet=12ahUKEwje5v795KqNAxUsUUEAHdFeGIcQM3oECHEQAA..i&w=1300&h=1389&hcb=2&ved=2ahUKEwje5v795KqNAxUsUUEAHdFeGIcQM3oECHEQAA
+dashboard   : https://www.google.com/imgres?q=dashboard%20transparent%20lgog&imgurl=https%3A%2F%2Fpreviews.123rf.com%2Fimages%2Furfandadashov%2Furfandadashov1808%2Furfandadashov180823306%2F108988792-dashboard-images-vector-icon-isolated-on-transparent-background-dashboard-images-logo-concept.jpg&imgrefurl=https%3A%2F%2Fwww.123rf.com%2Fphoto_108988792_dashboard-images-vector-icon-isolated-on-transparent-background-dashboard-images-logo-concept.html&docid=aS2g_4mqpfzkhM&tbnid=qL_5Y9-_8Rd-dM&vet=12ahUKEwic9uen5aqNAxV6XUEAHaOiBRkQM3oECBkQAA..i&w=1300&h=1300&hcb=2&ved=2ahUKEwic9uen5aqNAxV6XUEAHaOiBRkQM3oECBkQAA
+manage      : https://www.google.com/imgres?q=manage%20transparent%20lgog&imgurl=https%3A%2F%2Fpreviews.123rf.com%2Fimages%2Furfandadashov%2Furfandadashov1808%2Furfandadashov180823689%2F109015583-management-vector-icon-isolated-on-transparent-background-management-logo-concept.jpg&imgrefurl=https%3A%2F%2Fwww.123rf.com%2Fphoto_109015583_management-vector-icon-isolated-on-transparent-background-management-logo-concept.html&docid=R9bkvHt0FSTMOM&tbnid=Vv1YhSwNtYuW_M&vet=12ahUKEwjmotC85aqNAxXbVEEAHdSlCAkQM3oECBkQAA..i&w=1300&h=1300&hcb=2&ved=2ahUKEwjmotC85aqNAxXbVEEAHdSlCAkQM3oECBkQAA
+users       : https://www.google.com/imgres?q=users%20transparent%20lgog&imgurl=https%3A%2F%2Fw7.pngwing.com%2Fpngs%2F421%2F822%2Fpng-transparent-users-group-encapsulated-postscript-user-profile-group-miscellaneous-black-information.png&imgrefurl=https%3A%2F%2Fwww.pngwing.com%2Fen%2Fsearch%3Fq%3Duser&docid=8Qj_3LCalWAqLM&tbnid=Jsg4OXfSOZpRuM&vet=12ahUKEwiHh6jO5aqNAxVzQEEAHV3JCsIQM3oECGAQAA..i&w=920&h=512&hcb=2&ved=2ahUKEwiHh6jO5aqNAxVzQEEAHV3JCsIQM3oECGAQAA
+quantity    : https://www.google.com/imgres?q=count%20transparent%20logo&imgurl=https%3A%2F%2Fpreviews.123rf.com%2Fimages%2Ftvectoricons%2Ftvectoricons1808%2Ftvectoricons180807264%2F107700015-counting-vector-icon-isolated-on-transparent-background-counting-logo-concept.jpg&imgrefurl=https%3A%2F%2Fwww.123rf.com%2Fphoto_107700015_counting-vector-icon-isolated-on-transparent-background-counting-logo-concept.html&docid=170eibogHIpunM&tbnid=6lJqiil8F3i_3M&vet=12ahUKEwjs6cT45aqNAxVpTkEAHdJaHXUQM3oECBkQAA..i&w=1300&h=1300&hcb=2&ved=2ahUKEwjs6cT45aqNAxVpTkEAHdJaHXUQM3oECBkQAA
+price       : https://www.google.com/imgres?q=price%20transparent%20logo&imgurl=https%3A%2F%2Fwww.shutterstock.com%2Fimage-vector%2Fhand-money-giving-cash-simple-260nw-1968844498.jpg&imgrefurl=https%3A%2F%2Fwww.shutterstock.com%2Fsearch%2Ftransparent-pricing-icon&docid=9nktDRUu5SwqdM&tbnid=-CcO7p1oRIsuKM&vet=12ahUKEwi7vOGF5qqNAxXgXUEAHU_EE4IQM3oECB0QAA..i&w=260&h=280&hcb=2&ved=2ahUKEwi7vOGF5qqNAxXgXUEAHU_EE4IQM3oECB0QAA
+date        : https://www.google.com/imgres?q=date%20transparent%20logo&imgurl=https%3A%2F%2Fw7.pngwing.com%2Fpngs%2F912%2F120%2Fpng-transparent-computer-icons-calendar-date-others-calendar-rectangle-logo-thumbnail.png&imgrefurl=https%3A%2F%2Fwww.pngwing.com%2Fen%2Fsearch%3Fq%3Dcalendar%2BDate&docid=AiYHxjC6cTBFaM&tbnid=VfXy3MF9nhX5QM&vet=12ahUKEwjllpOW5qqNAxWpQUEAHd9rG6YQM3oECFMQAA..i&w=360&h=360&hcb=2&ved=2ahUKEwjllpOW5qqNAxWpQUEAHd9rG6YQM3oECFMQAA
+status      : https://www.google.com/imgres?q=pin%20transparent%20logo&imgurl=https%3A%2F%2Fpreviews.123rf.com%2Fimages%2Feljanstock%2Feljanstock1811%2Feljanstock181116306%2F112444817-pin-vector-icon-isolated-on-transparent-background-pin-transparency-logo-concept.jpg&imgrefurl=https%3A%2F%2Fwww.123rf.com%2Fphoto_112444817_pin-vector-icon-isolated-on-transparent-background-pin-transparency-logo-concept.html&docid=_rg_rzUnbEyZfM&tbnid=jQn-JwBh6fSbuM&vet=12ahUKEwjnpbnT5qqNAxV6QEEAHYBNAjAQM3oECGYQAA..i&w=1300&h=1300&hcb=2&ved=2ahUKEwjnpbnT5qqNAxV6QEEAHYBNAjAQM3oECGYQAA
+action      : https://www.google.com/imgres?q=map%20transparent%20logo&imgurl=https%3A%2F%2Fpreviews.123rf.com%2Fimages%2Furfandadashov%2Furfandadashov1808%2Furfandadashov180824180%2F109059143-map-vector-icon-isolated-on-transparent-background-map-logo-concept.jpg&imgrefurl=https%3A%2F%2Fwww.123rf.com%2Fphoto_109059143_map-vector-icon-isolated-on-transparent-background-map-logo-concept.html&docid=oBCC_rXwuwMtHM&tbnid=dRnAkDkmirAHHM&vet=12ahUKEwjQ9anq5qqNAxWkQ0EAHY6IHIwQM3oECFwQAA..i&w=1300&h=1300&hcb=2&ved=2ahUKEwjQ9anq5qqNAxWkQ0EAHY6IHIwQM3oECFwQAA
+
+
+chicken address : https://i.pinimg.com/736x/cb/88/49/cb884950ca81e53a8627863fb5f44d4f.jpg
+feather removed : https://i.pinimg.com/736x/80/6a/ae/806aaec475e952b3a5fef9173d38c80f.jpg
+egg tray        : https://i.pinimg.com/736x/a7/f1/d3/a7f1d34967cc81d5cc7d16b786b0168e.jpg

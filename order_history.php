@@ -1,128 +1,321 @@
+<?php
+session_start();
+require 'db.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+// Fetch all orders with product details
+$stmt = $pdo->prepare("
+    SELECT o.*, p.description, p.image_url 
+    FROM order_history o
+    JOIN products p ON o.product_id = p.product_id
+    WHERE o.user_id = ? 
+    ORDER BY o.processed_date DESC
+");
+$stmt->execute([$_SESSION['user_id']]);
+$orders = $stmt->fetchAll();
+
+// Calculate order statistics
+$totalSpent = 0;
+$orderStats = [
+    'processing' => 0,
+    'shipped' => 0,
+    'in_transit' => 0,
+    'delivered' => 0,
+    'cancelled' => 0
+];
+
+foreach ($orders as $order) {
+    $totalSpent += $order['price'] * $order['quantity'];
+    if (isset($orderStats[$order['status']])) {
+        $orderStats[$order['status']]++;
+    }
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Order History</title>
+    <title>Order History - LasLas24</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-            color: #333;
+        :root {
+            --bg-dark: #111;
+            --card-bg: #1a1a1a;
+            --text-light: #ececec;
+            --accent: #d6a56a;
+            --accent-light: #efcfa6;
+            --border: #333;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --danger: #F44336;
+            --info: #1E90FF;
         }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        /* ===== HEADER ===== */
+        header {
+            width: 100%;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(6px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .brand img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            filter: invert(1) brightness(0.9) sepia(1) hue-rotate(330deg) saturate(5);
+        }
+        
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .brand-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--accent-light);
+        }
+        
+        .brand-slogan {
+            font-size: 0.85rem;
+            font-style: italic;
+            color: var(--accent);
+            opacity: 0.9;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--accent-light);
+        }
+        
+        .nav-links img {
+            width: 18px;
+            height: 18px;
+            filter: invert(1) brightness(0.8);
+        }
+        
+        /* ===== MAIN CONTENT ===== */
         .container {
             max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            margin: 2rem auto;
+            padding: 0 2rem;
         }
+        
         h2 {
-            color: #2c3e50;
-            border-bottom: 2px solid #4CAF50;
+            color: var(--accent-light);
+            border-bottom: 2px solid var(--accent);
             padding-bottom: 10px;
-            margin-top: 0;
+            margin: 2rem 0 1.5rem;
+            font-family: 'Playfair Display', serif;
         }
+        
         .stats {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
+        
         .stat-card {
-            flex: 1;
-            min-width: 150px;
-            background: white;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
             text-align: center;
+            border: 1px solid var(--border);
+            transition: transform 0.3s ease;
         }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
         .stat-card h3 {
             margin-top: 0;
-            color: #4CAF50;
+            color: var(--accent-light);
+            font-size: 1rem;
         }
+        
         .stat-value {
-            font-size: 24px;
+            font-size: 1.75rem;
             font-weight: bold;
         }
+        
+        /* Status colors */
+        .status-processing { color: var(--info); }
+        .status-shipped { color: #9932CC; }
+        .status-delivered { color: var(--success); }
+        .status-cancelled { color: var(--danger); }
+        
+        /* ===== TABLE ===== */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin: 2rem 0;
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
         }
+        
         th, td {
-            padding: 12px 15px;
+            padding: 1rem 1.5rem;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid var(--border);
         }
+        
         th {
-            background-color: #4CAF50;
-            color: white;
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--accent-light);
+            font-weight: 600;
             position: sticky;
             top: 0;
         }
+        
         tr:hover {
-            background-color: #f5f5f5;
+            background: rgba(255, 255, 255, 0.03);
         }
-        .nav-links {
-            margin-bottom: 20px;
-        }
-        .nav-links a {
-            color: #4CAF50;
-            text-decoration: none;
-            margin-right: 15px;
-            font-weight: bold;
-        }
-        .nav-links a:hover {
-            text-decoration: underline;
-        }
-        /* Status colors */
-        .status-processing { color: #1E90FF; font-weight: bold; }
-        .status-shipped { color: #9932CC; font-weight: bold; }
-        .status-delivered { color: #4CAF50; font-weight: bold; }
-        .status-cancelled { color: #FF0000; font-weight: bold; }
-        .tracking-link {
-            color: #1E90FF;
-            text-decoration: none;
-        }
-        .tracking-link:hover {
-            text-decoration: underline;
-        }
+        
         .product-image {
             width: 60px;
             height: 60px;
             object-fit: cover;
             border-radius: 4px;
             margin-right: 10px;
-            vertical-align: middle;
+            border: 1px solid var(--border);
         }
+        
+        .tracking-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .tracking-link:hover {
+            color: var(--accent-light);
+            text-decoration: underline;
+        }
+        
         .no-orders {
             text-align: center;
-            padding: 30px;
-            color: #666;
+            padding: 3rem;
+            color: var(--accent-light);
+            background: var(--card-bg);
+            border-radius: 8px;
+            margin: 2rem 0;
         }
+        
         .total-amount {
-            font-size: 18px;
+            font-size: 1.1rem;
             text-align: right;
-            margin-top: 20px;
-            color: #2c3e50;
+            margin-top: 1.5rem;
+            color: var(--accent-light);
         }
+        
         .amount-value {
             font-weight: bold;
-            color: #4CAF50;
+            font-size: 1.3rem;
+            color: var(--accent);
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: space-around;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="nav-links">
-            <a href="shop.php">Continue Shopping</a>
-            <a href="cart.php">View Cart</a>
-            <a href="logout.php">Logout</a>
+    <!-- ===== HEADER ===== -->
+    <header>
+        <div class="brand">
+            <img src="logo.png" alt="LasLas24 Logo">
+            <div class="brand-text">
+                <span class="brand-name">LasLas24</span>
+                <span class="brand-slogan">Home of Premium Chicken</span>
+            </div>
         </div>
+        <div class="nav-links">
+            <a href="shop.php">
+                <img src="https://cdn-icons-png.flaticon.com/512/263/263142.png" alt="Shop">
+                Shop
+            </a>
+            <a href="cart.php">
+                <img src="https://cdn-icons-png.flaticon.com/512/263/263142.png" alt="Cart">
+                Cart
+            </a>
+            <a href="order_history.php">
+                <img src="https://cdn-icons-png.flaticon.com/512/2917/2917995.png" alt="Orders">
+                Orders
+            </a>
+            <a href="logout.php">
+                <img src="https://cdn-icons-png.flaticon.com/512/126/126467.png" alt="Logout">
+                Logout
+            </a>
+        </div>
+    </header>
 
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="container">
         <h2>Your Order History</h2>
         
         <div class="stats">
@@ -147,7 +340,7 @@
         <?php if (empty($orders)): ?>
             <div class="no-orders">
                 <p>You haven't placed any orders yet.</p>
-                <p><a href="shop.php">Start shopping now!</a></p>
+                <p><a href="shop.php" style="color: var(--accent);">Start shopping now!</a></p>
             </div>
         <?php else: ?>
             <table>
